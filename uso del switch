@@ -1,0 +1,36 @@
+#include <iostream>
+#include "conio.h"
+
+usando el espacio de nombres std;
+
+vacío principal()
+
+{
+   int a, b, r, opcion;
+   hacer {
+     cout << endl;
+     cout << "1.- Suma" << endl;
+     cout << "2.- Resta" << endl;
+     cout << "3.- Producto" << endl;
+     cout << "4.- División" << endl;
+     cout << "0.- Salir" << endl;
+     cout << "Elige una opción:";
+     cin >> opcion;
+     cout << "Ingrese a:";
+     cin >> a;
+     cout << "Ingrese b:";
+     cin >> b;
+     cambiar (opcion) {
+	    caso 1: r = a + b; romper;
+	    caso 2: r = a - b; romper;
+	    caso 3: r = a * b; romper;
+	    caso 4: r = a / b; romper;
+		caso 0: cout << "Salir"; romper;
+	    predeterminado: cout << "Opcion invalida" << endl;
+     }
+     si ((opcion> = 1) && (opcion <= 4)) 
+     	cout << "El resultado es" << r << endl;
+   } while (opcion! = 0);
+   getch ();
+
+}
