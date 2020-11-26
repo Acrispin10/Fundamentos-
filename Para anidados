@@ -1,0 +1,24 @@
+#include "stdafx.h"
+#include <iostream>
+#include <cstdlib>
+#include <time.h>
+
+usando el espacio de nombres std;
+
+int main ()
+{
+  int i, j, k;
+  int t0;
+  para (i = 0; i <10; i ++) {
+	  para (j = 0; j <10; j ++) {
+		  para (k = 0; k <10; k ++) {
+			  cout << "\ r" << i << j << k;
+			  cout.flush ();
+			  t0 = tiempo (0);
+			  while (t0 == tiempo (0)) {}
+		  }
+	  }
+  }
+   return 0;
+
+}
