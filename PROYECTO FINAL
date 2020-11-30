@@ -1,0 +1,361 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <windows.h>
+#include "stdlib.h"
+
+#ifdef _WIN32
+#define CLEAR "cls"
+#elif defined(unix)||defined(unix)||defined(unix)||defined(APPLE)||defined(MACH)
+#define CLEAR "clear"
+#else
+#error " no soportado para limpiar pantalla"
+#endif
+//#define MAX 40
+
+using namespace std;
+
+bool ingresar();
+void registrar();
+void tramites();
+void trampenales();
+void pausa();
+void error();
+void escribir();
+void confirmacion();
+
+int main()
+{
+    string usuario, password, Fecha;
+    string nombrecomp, mail, s;
+    int opcion, op1, op2, OpcTram, tram2;
+    system("COLOR E0");
+    cout << "\t\t\t\t\tBIENVENIDO A FASTRAMS " << endl;
+    cout << "\t\tSomos una aplicacion movil donde podras agilizar la realizacion" << endl;
+    cout << "\t\tde tus tramites desde cualquier lugar y en cualquier momento" << endl;
+    cout << "\t\t................................................................." << endl;
+    do {
+        cout << "\n ";
+        cout << "\t1. INGRESAR" << endl;
+        cout << "\t2. REGISTRARME" << endl;
+        cout << "\t3. SALIR" << endl;
+        cout << "\n" << endl;
+        cout << "\tA continuacion, seleccione la opcion que desea realizar: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+            if (ingresar())
+                tramites();
+            else
+                cout << "error Usuario no existe";
+            break;
+        case 2:
+            registrar();
+            cout << "Ingrese 0 para continuar: " << endl;
+            cin >> op1;
+            ingresar();
+            tramites();
+
+            break;
+            ;
+        case 3:
+            cout << "\t   ¿Seguro que quieres salir de la aplicacion?" << endl;
+            cout << "\t   Escriba SI o NO: ";
+            cin >> s;
+            if (s == "SI") {
+                cout << "\t   Gracias por utilizar FASTrams";
+                return 0;
+            }
+            if (s == "NO")
+                return main();
+            break;
+        default:
+            cout << "Opcion incorrecta" << endl;
+        }
+
+
+    } while (opcion != 3);
+
+
+    return 0;
+
+}
+bool ingresar() {
+    string nombre;
+    string domicilio;
+    string celular;
+    string correoelec;
+    string carnetUsuario;
+    int tram2;
+    ofstream escritura;
+    ifstream verificador;
+    string auxCarnet;
+    bool coincidencia = false;
+
+    verificador.open("clientes.txt", ios::in);
+    escritura.open("clientes.txt", ios::app);
+    if (escritura.is_open() && verificador.is_open())
+    {
+        cout << "Registro de Usuario" << endl;
+        fflush(stdin);
+        cout << "Ingrese el numero de carnet: ";
+        getline(cin, auxCarnet);
+        if (auxCarnet == "") {
+            do {
+                cout << "No valido, intentalo nuevamente: ";
+                getline(cin, auxCarnet);
+            } while (auxCarnet == "");
+        }
+        do
+        {
+            verificador.seekg(0);
+            getline(verificador, carnetUsuario);
+            while (!verificador.eof()) {
+                getline(verificador, nombre);
+                getline(verificador, domicilio);
+                getline(verificador, celular);
+                getline(verificador, correoelec);
+                if (carnetUsuario == auxCarnet) {
+                    coincidencia = true;
+                    cout << "Ingreso exitoso" << endl;
+                    cout << "Ingresa 0 para continuar " << endl;
+                    cin >> tram2;
+                    if (tram2 == 0)
+                        do
+                        {
+                            tramites();
+                        } while (tram2 != 0);
+
+                        break;
+                }
+
+                getline(verificador, carnetUsuario);
+            }
+
+            if (verificador.eof() || auxCarnet != carnetUsuario)
+                coincidencia = false;
+
+        } while (coincidencia == true);
+    }
+    else {
+        error();
+    }
+
+
+
+    escritura.close();
+    verificador.close();
+    pausa();
+    return coincidencia;
+
+}
+
+
+
+
+void registrar() {
+    string nombre;
+    string domicilio;
+    string celular;
+    string correoelec;
+    string carnetUsuario;
+    ofstream escritura;
+    ifstream verificador;
+    string auxCarnet;
+    bool coincidencia = false;
+    verificador.open("clientes.txt", ios::in);
+    escritura.open("clientes.txt", ios::app);
+    if (escritura.is_open() && verificador.is_open())
+    {
+        cout << "Registro de Usuario" << endl;
+        fflush(stdin);
+        cout << "Ingrese el numero de carnet: ";
+        getline(cin, auxCarnet);
+        if (auxCarnet == "")
+            do
+            {
+                cout << "No valido, intentalo nuevamente: ";
+                getline(cin, auxCarnet);
+            } while (auxCarnet == "");
+            do
+            {
+                verificador.seekg(0);
+                getline(verificador, carnetUsuario);
+                while (!verificador.eof())
+                {
+                    getline(verificador, nombre);
+                    getline(verificador, domicilio);
+                    getline(verificador, celular);
+                    getline(verificador, correoelec);
+
+                    if (carnetUsuario == auxCarnet)
+                    {
+                        coincidencia = true;
+                        cout << "Ya existe un usuario con el numero de carnet" << endl;
+                        cout << "El Usuario con el numero de carnet es : " << nombre << endl;
+                        cout << "Ingresa un numero de carnet valido " << endl;
+                        getline(cin, auxCarnet);
+                        if (auxCarnet == "")
+                            do
+                            {
+                                cout << "El numero de carnet no es valido: ";
+                                getline(cin, auxCarnet);
+                            } while (auxCarnet == "");
+
+                            break;
+                    }
+
+                    getline(verificador, carnetUsuario);
+                }
+
+                if (verificador.eof() && auxCarnet != carnetUsuario)
+                    coincidencia = false;
+
+            } while (coincidencia == true);
+            system(CLEAR);
+            carnetUsuario = auxCarnet;
+            cout << "Registro de Nuevo usario" << endl;
+            cout << "Ingrese su numero de carnet: ";
+            cout << carnetUsuario << endl;
+
+            fflush(stdin);
+            cout << "Ingresa su nombre: ";
+            getline(cin, nombre);
+            cout << "";
+            fflush(stdin);
+            cout << "Ingresa la direccion de su domicilio : ";
+            getline(cin, domicilio);
+            cout << "";
+            fflush(stdin);
+            cout << "Ingresa su numero de telefono: ";
+            getline(cin, celular);
+            cout << "";
+            fflush(stdin);
+            cout << "Ingrese su correo electronico: ";
+            getline(cin, correoelec);
+            cout << "";
+
+            escritura << carnetUsuario << "\n" << nombre << "\n" << domicilio << "\n" << celular
+                << "\n" << correoelec << "\n";
+
+            cout << "El registro se ha completado correctamente." << endl;
+    }
+
+    else
+    {
+        error();
+    }
+
+    escritura.close();
+    verificador.close();
+    pausa();
+
+}
+void tramites() {
+    int OpcTram;
+    cout << "\n" << endl;
+    cout << "\tA continuacion, le presentaremos los tramites disponibles para realizar" << endl;
+    cout << "\t1.Antecedentes penales" << endl;
+    cout << "\tIngrese la opcion de su preferencia: ";
+    cin >> OpcTram;
+    if (OpcTram == 1)
+        trampenales();
+    else
+        cout << "Este tramite no se encuentra aun disponible en plataforma" << endl;
+}
+
+
+
+void trampenales() {
+    cout << "\n" << endl;
+    cout << "\n" << endl;
+    cout << "\t\t\t---------------------REQUISITOS--------------------------------------" << endl;
+    cout << "\n" << endl;
+    cout << "\t\t\t| Una fotografia tamaño 4x4 con fondo rojo |" << endl;
+    cout << "\t\t\t| Dos fotocopias de la Cedula de Identidad |" << endl;
+    cout << "\t\t\t| Presentar la Cedula de Identidad original |" << endl;
+    cout << "\t\t\t| Las señoras que lleven el apellido de casada deben presentar una fotocopia del Certificado de Nacimiento o Matrimonio|" << endl;
+    cout << "\t\t\t| Deposito de Bs. 60 a la cuenta bancaria habilitada para su Departamento Banco UNION |" << endl;
+    cout << "\t\t\t| Una fotocopia simple de la boleta de deposito |" << endl;
+    escribir();
+
+}
+
+void pausa()
+{
+    cout << "Presiona Enter para continuar...";
+
+    system(CLEAR);
+}
+void error()
+{
+    cout << "No se pudo abrir el archivo de registros" << endl;
+}
+void escribir() {
+    ofstream archivo;
+    string nombre, apellido, direccion, fechadenacimiento;
+    int telefono, op, op2, cedula, codigo;
+    do {
+        cout << "1.Empezar trámite de Antecedentes Penales" << endl;
+        
+        cout << "Elija una opción" << endl;
+        cin >> op;
+        cin.ignore();
+        if (op == 1) {
+            if (!archivo.is_open())
+            {
+                archivo.open("d://prueba2//ejemplote.text", ios::app); //abriendo archivo
+            }
+            cout << "RELLENE LOS SIGUIENTES DATOS" << endl;
+            cout << "Nombre: ";
+            getline(cin, nombre);
+            cout << "Apellidos: ";
+            getline(cin, apellido);
+            cout << "Dirección: ";
+            getline(cin, direccion);
+            cout << "Fecha de nacimineto (00/00/0000): ";
+            getline(cin, fechadenacimiento);
+            cout << "Cédula: ";
+            cin >> cedula;
+            cout << "Telefono: ";
+            cin >> telefono;
+            cout << "Código del deposito bancario: ";
+            cin >> codigo;
+
+            cout << "1.- Guardar datos" << endl;
+            cout << "Elija una opción" << endl;
+            cin >> op2;
+
+            if (op2 == 1) {
+                archivo << "Nombre: " << nombre << endl;
+                archivo << "Apellidos: " << apellido << endl;
+                archivo << "Dirección: " << direccion << endl;
+                archivo << "Fecha de nacimineto: " << fechadenacimiento << endl;
+                archivo << "CI: " << cedula << endl;
+                archivo << "Teléfono: " << telefono << endl;
+                archivo << "Código del deposito bancario: " << codigo << endl;
+                system("cls");
+                cout << "Datos guardados con éxito..." << endl;
+                confirmacion();
+                system("pause");
+                system("cls");
+
+            }
+            archivo.close();
+        }
+    } while (op != 2);
+}
+void confirmacion() {
+    int site;
+    cout << "TRAMITE COMPLETADO EXITOSAMENTE" << endl;
+    cout << "RECIBIRA CONFIRMACIÓN POR MENSAJE" << endl;
+    cout << "Presione 1: " << endl;
+    cin >> site;
+    string baseUrl;
+    if (site == 1) {
+        baseUrl = "https://wa.link/6ikfy7";
+    }
+    string completeUrl = baseUrl;
+    system(std::string("start " + completeUrl).c_str());
+}
