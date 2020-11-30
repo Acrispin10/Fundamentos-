@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+#define MAX 20
+
+void CargarVector(int vecX[],int x);
+// void MostrarVector(int vecX[], int x);
+
+
+int main()
+{
+    int n = 0, vec[100];
+    cout << "EJERCICIO DE VECTORES" << endl;
+    cout << "ingrese el tamano del vector" << endl;
+    cin >> n;
+
+    CargarVector(vec, n);
+    //MostrarVector(vec, n);
+
+    return 0;
+}
+
+void CargarVector(int vecX[], int x) {
+    // int vec[n];
+    for (int i = 0; i < x; i++) {
+        cout << "ingrese el valor de la posicion vec[" << i << "]:";
+        cin >> vecX[i];
+
+    }
+}
