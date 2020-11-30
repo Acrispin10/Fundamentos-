@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+int main ();
+
+    int verificar_divisibilidad (int numero_mayor, int numero_menor)
+    {
+        bool verificacion;
+        if (numero_mayor % numero_menor==0)
+        {
+            verificacion =true;
+        }
+        else
+        {
+            verificacion = false;
+        }
+        return verificacion;
+    }
+    int main()
+    {
+        int primer_numero,segundo_numero,division;
+        cout << "ingrese dos numeros" << endl;
+        do
+        {
+            cout << " ingrese el primer numero" << endl;
+            cin >> primer_numero;
+        } while (primer_numero<=0);
+        do {
+            cout << "ingrese el segundo numero y debe ser menor" << endl;
+            cin >> segundo_numero;
+        } while (segundo_numero>primer_numero);
+
+        division=verificar_divisibilidad(primer_numero,segundo_numero);
+        if (division==true) {
+            cout << " el numero " << segundo_numero << " es divisor de" << primer_numero << endl;
+        }
+        else {
+            cout << "el primer y segundo numero no son divisibles " << endl;
+        }
+        return 0;
+    }
